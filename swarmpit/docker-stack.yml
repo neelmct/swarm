@@ -32,7 +32,7 @@ services:
   db:
     image: couchdb:2.3.0
     volumes:
-      - /mnt/cifs/swarm/volumes/swarmpit/db-data:/opt/couchdb/data
+      - /mnt/swarm/volumes/swarmpit/db-data:/opt/couchdb/data
     networks:
       - net
     deploy:
@@ -50,7 +50,7 @@ services:
   influxdb:
     image: influxdb:1.7
     volumes:
-      - /mnt/cifs/swarm/volumes/swarmpit/influx-data:/var/lib/influxdb
+      - /mnt/swarm/volumes/swarmpit/influx-data:/var/lib/influxdb
     networks:
       - net
     deploy:

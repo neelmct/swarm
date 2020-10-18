@@ -1,0 +1,55 @@
+version: '3'
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  LE_certificates:
+    external: true
+
+services:
+  traefik:
+    image: traefik
+    command:
+      - "--log.level=DEBUG"
+      - "--providers.docker"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--api.insecure=true"
+      - "--entryPoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.ovhresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.ovhresolver.acme.dnschallenge.provider=ovh"
+      - "--certificatesresolvers.ovhresolver.acme.dnschallenge.delaybeforecheck=0"
+      - "--certificatesresolvers.ovhresolver.acme.email=perso@clfp.fr"
+      - "--certificatesresolvers.ovhresolver.acme.storage=acme.json"
+      #LE staging server
+      - "--certificatesresolvers.ovhresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+    networks:
+      - proxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    env_file:
+      - "ovh_api.env"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - LE_certificates:/acme.json
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - "node.role==manager"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.entrypoints=websecure"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.clfp.fr`)"
+        - "traefik.http.routers.traefik.tls=true"
+        - "traefik.http.routers.traefik.tls.certresolver=ovhresolver"
+        - "traefik.http.routers.traefik.tls.domains[0].main=clfp.fr"
+        - "traefik.http.routers.traefik.tls.domains[0].sans=*.clfp.fr"
+        - "traefik.http.routers.traefik.service=api@internal"
+        - "traefik.http.services.traefik.loadbalancer.server.port=8080"

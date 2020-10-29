@@ -20,9 +20,9 @@ services:
       - "--certificatesresolvers.ovhresolver.acme.dnschallenge.provider=ovh"
       - "--certificatesresolvers.ovhresolver.acme.dnschallenge.delaybeforecheck=0"
       - "--certificatesresolvers.ovhresolver.acme.email=perso@clfp.fr"
-      - "--certificatesresolvers.ovhresolver.acme.storage=acme.json"
+      - "--certificatesresolvers.ovhresolver.acme.storage=/mnt/acme.json"
       #LE staging server
-      - "--certificatesresolvers.ovhresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+#      - "--certificatesresolvers.ovhresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     networks:
       - proxy
     ports:
@@ -33,7 +33,7 @@ services:
       - "ovh_api.env"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /mnt/swarm/volumes/proxy/acme.json:/acme.json
+      - /mnt/swarm/volumes/proxy:/mnt
     deploy:
       mode: global
       placement:

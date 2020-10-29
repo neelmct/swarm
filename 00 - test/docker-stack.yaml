@@ -1,23 +1,19 @@
 version: '3'
 
 networks:
-  lan:
-    driver: macvlan
-    driver_opts:
-        parent: eth0
-      ipam:
-        config:
-          - subnet: 10.44.0.0/24
-          - gateway: 10.44.0.1
-          - ip-range: 10.44.0.56/30
+  swarm_macvlan:
+    external: true
 
 services:
   test:
     image: caddy
     networks:
-      - lan
+      - swarm_macvlan
 #    ports:
 #      - "8082:80"
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - "node.role==worker"

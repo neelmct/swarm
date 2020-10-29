@@ -12,6 +12,7 @@ services:
       - "--providers.docker"
       - "--providers.docker.swarmMode=true"
       - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=proxy"
       - "--api.insecure=true"
       - "--entryPoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"

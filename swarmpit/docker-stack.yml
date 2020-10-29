@@ -16,7 +16,8 @@ services:
       timeout: 10s
       retries: 3
     networks:
-      - net
+      - internal
+      - proxy
     deploy:
       resources:
         limits:
@@ -28,13 +29,18 @@ services:
       placement:
         constraints:
           - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.rule=Host(`swarmpit.clfp.fr`)"
+        - "traefik.http.routers.traefik.tls=true"
+        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
   db:
     image: couchdb:2.3.0
     volumes:
       - /mnt/swarm/volumes/swarmpit/db-data:/opt/couchdb/data
     networks:
-      - net
+      - internal
     deploy:
       resources:
         limits:
@@ -52,7 +58,7 @@ services:
     volumes:
       - /mnt/swarm/volumes/swarmpit/influx-data:/var/lib/influxdb
     networks:
-      - net
+      - internal
     deploy:
       resources:
         limits:
@@ -72,7 +78,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - net
+      - internal
     deploy:
       mode: global
       labels:
@@ -86,5 +92,8 @@ services:
           memory: 32M
 
 networks:
-  net:
+  internal:
     driver: overlay
+  proxy:
+    external: true
+  

@@ -11,8 +11,8 @@ services:
     image: "traefik/whoami"
     networks:
       - proxy
-    ports:
-      - "8087:80"
+#    ports:
+#      - "8087:80"
     deploy:
       mode: global
       placement:
@@ -24,6 +24,6 @@ services:
         - "traefik.http.routers.whoami.rule=Host(`whoami.clfp.fr`)"
         - "traefik.http.routers.whoami.tls=true"
         - "traefik.http.services.whoami.loadbalancer.server.port=80"
-        - "traefik.http.routers.whoami.tls.certresolver=ovhresolver"
-        - "traefik.http.routers.whoami.tls.domains[0].main=clfp.fr"
-        - "traefik.http.routers.whoami.tls.domains[0].sans=*.clfp.fr"
+#        - "traefik.http.routers.whoami.tls.certresolver=ovhresolver"
+#        - "traefik.http.routers.whoami.tls.domains[0].main=clfp.fr"
+#        - "traefik.http.routers.whoami.tls.domains[0].sans=*.clfp.fr"

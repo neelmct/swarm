@@ -4,10 +4,6 @@ networks:
   proxy:
     external: true
 
-volumes:
-  LE_certificates:
-    external: true
-
 services:
   traefik:
     image: traefik
@@ -37,7 +33,7 @@ services:
       - "ovh_api.env"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - LE_certificates:/acme.json
+      - /mnt/swarm/volumes/proxy/acme.json:/acme.json
     deploy:
       mode: global
       placement:

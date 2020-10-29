@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - 8088:8080
+      - 8085:8080
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 60s
@@ -31,9 +31,11 @@ services:
           - node.role == manager
       labels:
         - "traefik.enable=true"
+        - "traefik.http.routers.swarmpit.entrypoints=websecure"
         - "traefik.http.routers.swarmpit.rule=Host(`swarmpit.clfp.fr`)"
         - "traefik.http.routers.swarmpit.tls=true"
         - "traefik.http.services.swarmpit.loadbalancer.server.port=8080"
+        - "traefik.http.routers.swarmpit.tls.certresolver=ovhresolver"
 
   db:
     image: couchdb:2.3.0

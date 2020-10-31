@@ -35,8 +35,8 @@ services:
       placement:
         constraints:
           - "node.role==worker"
-        labels:
-          - "traefik.enable=false"
+      labels:
+        - "traefik.enable=false"
 
   mongo:
     image: mongo:3.6

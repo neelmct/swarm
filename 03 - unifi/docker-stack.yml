@@ -1,0 +1,46 @@
+version: '3.7'
+  
+networks:
+  internal:
+    driver: overlay
+  swarm_macvlan:
+    external: true
+  proxy:
+    external: true
+
+services:
+  controller:
+    image: jacobalberty/unifi
+    init: true
+    networks:
+      - swarm_macvlan
+      - proxy
+      - internal
+    volumes:
+      - /mnt/swarm/volumes/unifi/controller:/unifi
+    user: unifi
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    environment:
+      DB_URI: mongodb://mongo/unifi
+      STATDB_URI: mongodb://mongo/unifi_stat
+      DB_NAME: unifi
+    ports:
+      - "8443:8443/tcp" # Controller GUI/API as seen in a web browser
+      - "8883:8880/tcp" # HTTP portal redirection
+      - "8843:8843/tcp" # HTTPS portal redirection
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==worker"
+        labels:
+          - "traefik.enable=false"
+
+  mongo:
+    image: mongo:3.6
+    networks:
+      - internal
+    volumes:
+      - /mnt/swarm/volumes/unifi/mongo:/data

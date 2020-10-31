@@ -4,3 +4,5 @@
 **/*.env
 **/*.secret
 **/*.secrets
+*.code-workspace
+**/*.code-workspace

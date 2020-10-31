@@ -1,0 +1,23 @@
+version: '3'
+
+networks:
+  lan:
+    driver: macvlan
+    driver_opts:
+        parent: eth0
+      ipam:
+        config:
+          - subnet: 10.44.0.0/24
+          - gateway: 10.44.0.1
+          - ip-range: 10.44.0.56/30
+
+services:
+  test:
+    image: caddy
+    networks:
+      - lan
+#    ports:
+#      - "8082:80"
+    deploy:
+      mode: replicated
+      replicas: 1

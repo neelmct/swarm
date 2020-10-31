@@ -16,8 +16,3 @@ OVH_APPLICATION_SECRET=<application-secret>
 OVH_CONSUMER_KEY=<consumer-key>
 ```
 ovh_api.env
-# Volumes
-Create volume for certificate persistent storage
-```
-docker volume create LE_certificates
-```

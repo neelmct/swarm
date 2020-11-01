@@ -38,6 +38,7 @@ services:
         - "traefik.http.services.unifi.loadbalancer.server.port=8443"
         - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
         - "traefik.http.routers.unifi.tls.certresolver=ovhresolver"
+        - "traefik.http.routers.unifi.middlewares=HSTS"
 
   mongo:
     image: mongo:3.6

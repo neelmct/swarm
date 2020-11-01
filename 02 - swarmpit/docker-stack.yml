@@ -36,6 +36,7 @@ services:
         - "traefik.http.routers.swarmpit.tls=true"
         - "traefik.http.services.swarmpit.loadbalancer.server.port=8080"
         - "traefik.http.routers.swarmpit.tls.certresolver=ovhresolver"
+        - "traefik.http.routers.swarmpit.middlewares=HSTS"
 
   db:
     image: couchdb:2.3.0

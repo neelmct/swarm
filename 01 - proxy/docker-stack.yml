@@ -23,6 +23,8 @@ services:
       - "--certificatesresolvers.ovhresolver.acme.email=perso@clfp.fr"
       - "--certificatesresolvers.ovhresolver.acme.storage=/mnt/acme.json"
       - "--serversTransport.insecureSkipVerify=true" #enable https backend with self-signed certificate
+      - "--providers.file.filename=/config/tls.yml"
+      - "--providers.file.watch=true"
       #LE staging server
 #      - "--certificatesresolvers.ovhresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     networks:
@@ -35,6 +37,7 @@ services:
       - "ovh_api.env"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - "/mnt/swarm/stack-files/01 - proxy/tls.yml:/config/tls.yml"
       - /mnt/swarm/volumes/proxy:/mnt
     deploy:
       mode: global
@@ -51,3 +54,8 @@ services:
         - "traefik.http.routers.traefik.tls.domains[0].sans=*.clfp.fr"
         - "traefik.http.routers.traefik.service=api@internal"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+        - "traefik.http.middlewares.HSTS.headers.forcestsheader=true"
+        - "traefik.http.middlewares.HSTS.headers.stsincludesubdomains=true"
+        - "traefik.http.middlewares.HSTS.headers.stsseconds=31536000"
+        - "traefik.http.middlewares.HSTS.headers.sslredirect=true"
+        - "traefik.http.routers.traefik.middlewares=HSTS"

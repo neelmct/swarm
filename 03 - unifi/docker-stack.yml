@@ -24,8 +24,6 @@ services:
       DB_URI: mongodb://mongo/unifi
       STATDB_URI: mongodb://mongo/unifi_stat
       DB_NAME: unifi
-    expose:
-      - "8443/tcp"
     deploy:
       mode: replicated
       replicas: 1
@@ -37,8 +35,8 @@ services:
         - "traefik.http.routers.unifi.entrypoints=websecure"
         - "traefik.http.routers.unifi.rule=Host(`unifi.clfp.fr`)"
         - "traefik.http.routers.unifi.tls=true"
-        - "traefik.http.services.unifi.loadbalancer.server.port=8433"
-        - "traefik.http.services.myservice.loadbalancer.server.scheme=https"
+        - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+        - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
         - "traefik.http.routers.unifi.tls.certresolver=ovhresolver"
 
   mongo:
@@ -46,7 +44,7 @@ services:
     networks:
       - internal
     volumes:
-      - /mnt/swarm/volumes/unifi/mongo:/data
+      - /mnt/swarm/volumes/unifi/mongo:/data/db
     deploy:
       mode: replicated
       replicas: 1

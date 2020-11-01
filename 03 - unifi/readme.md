@@ -1,8 +1,8 @@
 ## Unifi controller
 
 ### Volumes
-`mongo/db` and `mongo/configdb` (and `controller`) **must** be created before deploy.
-`mongo/db` and `mongo/configdb` **must** be 755 (`chmod 755`)
+~~`mongo/db` and `mongo/configdb` (and `controller`) **must** be created before deploy.~~ \
+~~`mongo/db` and `mongo/configdb` **must** be 755 (`chmod 755`)~~
 
 ### Network
 Unifi controller need to have direct access to the LAN, so i use a macvlan network

@@ -16,16 +16,16 @@ services:
       - unifi_macvlan
       - proxy
       - internal
-#    volumes:
-#      - /mnt/swarm/volumes/unifi/controller:/unifi
+    volumes:
+      - /mnt/swarm/volumes/unifi/controller:/unifi
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
     environment:
       DB_URI: mongodb://mongo/unifi
       STATDB_URI: mongodb://mongo/unifi_stat
       DB_NAME: unifi
-    ports:
-      - "8083:8443/tcp"
+    expose:
+      - "8443/tcp"
     deploy:
       mode: replicated
       replicas: 1
@@ -33,14 +33,20 @@ services:
         constraints:
           - "node.role==worker"
       labels:
-        - "traefik.enable=false"
+        - "traefik.enable=true"
+        - "traefik.http.routers.unifi.entrypoints=websecure"
+        - "traefik.http.routers.unifi.rule=Host(`unifi.clfp.fr`)"
+        - "traefik.http.routers.unifi.tls=true"
+        - "traefik.http.services.unifi.loadbalancer.server.port=8433"
+        - "traefik.http.services.myservice.loadbalancer.server.scheme=https"
+        - "traefik.http.routers.unifi.tls.certresolver=ovhresolver"
 
   mongo:
     image: mongo:3.6
     networks:
       - internal
-#    volumes:
-#      - /mnt/swarm/volumes/unifi/mongo:/data
+    volumes:
+      - /mnt/swarm/volumes/unifi/mongo:/data
     deploy:
       mode: replicated
       replicas: 1

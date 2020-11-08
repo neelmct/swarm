@@ -18,18 +18,19 @@ services:
         networks:
           - internal
           - proxy
-        placement:
-            constraints:
-              - "node.role == worker"
-        labels:
-          - "traefik.enable=true"
-          - "traefik.http.routers.pydio.entrypoints=websecure"
-          - "traefik.http.routers.pydio.rule=Host(`pydio.clfp.fr`)"
-          - "traefik.http.routers.pydio.tls=true"
-          - "traefik.http.services.pydio.loadbalancer.server.port=443"
-          - "traefik.http.services.pydio.loadbalancer.server.scheme=https"
-          - "traefik.http.routers.pydio.tls.certresolver=ovhresolver"
-#          - "traefik.http.routers.swarmpit.middlewares=HSTS"
+        deploy:
+            placement:
+                constraints:
+                - "node.role == worker"
+            labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.pydio.entrypoints=websecure"
+            - "traefik.http.routers.pydio.rule=Host(`pydio.clfp.fr`)"
+            - "traefik.http.routers.pydio.tls=true"
+            - "traefik.http.services.pydio.loadbalancer.server.port=443"
+            - "traefik.http.services.pydio.loadbalancer.server.scheme=https"
+            - "traefik.http.routers.pydio.tls.certresolver=ovhresolver"
+#            - "traefik.http.routers.swarmpit.middlewares=HSTS"
 
     mysql:
         image: maridadb
@@ -44,6 +45,7 @@ services:
           - "mariadb.env"
         networks:
           - internal
-        placement:
-            constraints:
-              - "node.role == worker"
+        deploy:
+            placement:
+                constraints:
+                - "node.role == worker"

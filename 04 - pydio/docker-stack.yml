@@ -1,0 +1,49 @@
+version: '3.3'
+
+networks:
+    internal:
+      driver: overlay
+    proxy:
+      external: true
+
+services:
+    cells:
+        image: pydio/cells:latest
+        restart: unless-stopped
+        volumes:
+          - /mnt/swarm/volumes/pydio/cells:/var/cells
+        environment:
+          - CELLS_BIND=0.0.0.0:443
+          - CELLS_EXTERNAL=https://pydio.clfp.fr
+        networks:
+          - internal
+          - proxy
+        placement:
+            constraints:
+              - "node.role == worker"
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.pydio.entrypoints=websecure"
+          - "traefik.http.routers.pydio.rule=Host(`pydio.clfp.fr`)"
+          - "traefik.http.routers.pydio.tls=true"
+          - "traefik.http.services.pydio.loadbalancer.server.port=443"
+          - "traefik.http.services.pydio.loadbalancer.server.scheme=https"
+          - "traefik.http.routers.pydio.tls.certresolver=ovhresolver"
+#          - "traefik.http.routers.swarmpit.middlewares=HSTS"
+
+    mysql:
+        image: maridadb
+        restart: unless-stopped
+        command:
+          - "mysqld"
+          - "--character-set-server=utf8mb4"
+          - "--collation-server=utf8mb4_unicode_ci"
+        volumes:
+          - /mnt/swarm/volumes/pydio/db:/var/lib/mysql
+        env_file:
+          - "mariadb.env"
+        networks:
+          - internal
+        placement:
+            constraints:
+              - "node.role == worker"

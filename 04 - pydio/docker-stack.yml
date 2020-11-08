@@ -32,8 +32,8 @@ services:
             - "traefik.http.routers.pydio.tls.certresolver=ovhresolver"
 #            - "traefik.http.routers.swarmpit.middlewares=HSTS"
 
-    mysql:
-        image: maridadb
+    mariadb:
+        image: mariadb
         restart: unless-stopped
         command:
           - "mysqld"

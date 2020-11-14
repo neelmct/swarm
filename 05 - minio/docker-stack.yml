@@ -1,0 +1,39 @@
+version: '3.3'
+
+networks:
+    proxy:
+      external: true
+
+services:
+    minio:
+      image: minio/minio
+      restart: unless-stopped
+#     volumes:
+#        - /mnt/swarm/volumes/pydio/cells:/var/cells
+      environment:
+        - MINIO_ACCESS_KEY=test
+        - MINIO_SECRET_KEY=test
+      networks:
+        - proxy
+      deploy:
+        placement:
+          constraints:
+            - "node.role == worker"
+          labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.minio.entrypoints=websecure"
+            - "traefik.http.routers.minio.rule=Host(`minio.clfp.fr`)"
+            - "traefik.http.routers.minio.tls=true"
+            - "traefik.http.services.minio.loadbalancer.server.port=443"
+            - "traefik.http.services.minio.loadbalancer.server.scheme=https"
+            - "traefik.http.routers.minio.tls.certresolver=ovhresolver"
+#            - "traefik.http.routers.swarmpit.middlewares=HSTS"
+        restart_policy:
+          delay: 10s
+          max_attempts: 10
+          window: 60s
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+        interval: 30s
+        timeout: 20s
+        retries: 3

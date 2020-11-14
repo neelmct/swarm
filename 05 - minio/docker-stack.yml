@@ -19,15 +19,15 @@ services:
         placement:
           constraints:
             - "node.role == worker"
-          labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.minio.entrypoints=websecure"
-            - "traefik.http.routers.minio.rule=Host(`minio.clfp.fr`)"
-            - "traefik.http.routers.minio.tls=true"
-            - "traefik.http.services.minio.loadbalancer.server.port=443"
-            - "traefik.http.services.minio.loadbalancer.server.scheme=https"
-            - "traefik.http.routers.minio.tls.certresolver=ovhresolver"
-#            - "traefik.http.routers.swarmpit.middlewares=HSTS"
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.minio.entrypoints=websecure"
+          - "traefik.http.routers.minio.rule=Host(`minio.clfp.fr`)"
+          - "traefik.http.routers.minio.tls=true"
+          - "traefik.http.services.minio.loadbalancer.server.port=443"
+          - "traefik.http.services.minio.loadbalancer.server.scheme=https"
+          - "traefik.http.routers.minio.tls.certresolver=ovhresolver"
+#          - "traefik.http.routers.swarmpit.middlewares=HSTS"
         restart_policy:
           delay: 10s
           max_attempts: 10

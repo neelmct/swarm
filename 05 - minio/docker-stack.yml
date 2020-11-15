@@ -7,12 +7,17 @@ networks:
 services:
     minio:
       image: minio/minio
-      restart: unless-stopped
+      command:
+        - "gateway"
+        - "nas"
+        - "/data"
+        - "/data1"
 #     volumes:
 #        - /mnt/swarm/volumes/pydio/cells:/var/cells
       environment:
-        - MINIO_ACCESS_KEY=test
-        - MINIO_SECRET_KEY=test
+        - MINIO_ACCESS_KEY=Password@123
+        - MINIO_SECRET_KEY=Password@123
+        - MINIO_ETCD_ENDPOINTS=http://localhost:9001
       networks:
         - proxy
       deploy:
@@ -24,8 +29,8 @@ services:
           - "traefik.http.routers.minio.entrypoints=websecure"
           - "traefik.http.routers.minio.rule=Host(`minio.clfp.fr`)"
           - "traefik.http.routers.minio.tls=true"
-          - "traefik.http.services.minio.loadbalancer.server.port=443"
-          - "traefik.http.services.minio.loadbalancer.server.scheme=https"
+          - "traefik.http.services.minio.loadbalancer.server.port=9000"
+#          - "traefik.http.services.minio.loadbalancer.server.scheme=https"
           - "traefik.http.routers.minio.tls.certresolver=ovhresolver"
 #          - "traefik.http.routers.swarmpit.middlewares=HSTS"
         restart_policy:

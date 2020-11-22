@@ -55,6 +55,8 @@ services:
       - "gateway"
       - "nas"
       - "/data"
+    ports:
+      - 9000:9000
 #   volumes:
 #     - /mnt/data/users:/data/users
     environment:

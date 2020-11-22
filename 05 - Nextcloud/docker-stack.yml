@@ -9,8 +9,8 @@ networks:
 services:
   db:
     image: postgres:alpine
-    volumes:
-      - "/mnt/swarm/volumes/nextcloud/db:/var/lib/postgresql/data"
+#    volumes:
+#      - "/mnt/swarm/volumes/nextcloud/db:/var/lib/postgresql/data"
     env_file: "nextcloud.env"
     networks:
       - internal
@@ -30,9 +30,9 @@ services:
 
   app:
     image: nextcloud:apache
-    restart: always
+    user: "root:root"
     ports:
-      - 8080:80
+      - 8085:80
     volumes:
       - "/mnt/swarm/volumes/nextcloud/app:/var/www/html"
     environment:

@@ -11,6 +11,7 @@ services:
     image: pydio/cells:latest
     volumes:
       - /mnt/swarm/volumes/pydio/cells:/var/cells
+      - /mnt/data/users:/mnt/users
     environment:
       - CELLS_BIND=0.0.0.0:443
       - CELLS_EXTERNAL=https://pydio.clfp.fr
@@ -47,29 +48,3 @@ services:
       placement:
         constraints:
           - "node.role == worker"
-
-# S3 frontend
-  minio:
-    image: minio/minio
-    command:
-      - "gateway"
-      - "nas"
-      - "/data"
-    ports:
-      - 9000:9000
-#   volumes:
-#     - /mnt/data/users:/data/users
-    environment:
-      - MINIO_ACCESS_KEY=Password@123
-      - MINIO_SECRET_KEY=Password@123
-    networks:
-      - internal
-    deploy:
-      placement:
-        constraints:
-          - "node.role == worker"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3

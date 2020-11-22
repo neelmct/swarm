@@ -32,7 +32,7 @@ services:
         - "traefik.http.routers.pydio.tls.certresolver=ovhresolver"
 #        - "traefik.http.routers.swarmpit.middlewares=HSTS"
 
-  mariadb:
+  db:
     image: mariadb
     command:
       - "mysqld"

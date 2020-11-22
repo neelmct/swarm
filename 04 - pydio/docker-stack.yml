@@ -7,10 +7,10 @@ networks:
     external: true
 
 services:
-  cells:
+  app:
     image: pydio/cells:latest
     volumes:
-      - /mnt/swarm/volumes/pydio/cells:/var/cells
+      - /mnt/swarm/volumes/pydio/app:/var/cells
       - /mnt/data/users:/mnt/users
     environment:
       - CELLS_BIND=0.0.0.0:443

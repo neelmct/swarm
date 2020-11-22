@@ -59,8 +59,10 @@ services:
       ports:
         - 9000:9000
       volumes:
-        - /mnt/data/users:/data/users
         - /mnt/data/users/Clement:/data/clement
+        - /mnt/data/users/Nathalie:/data/nathalie
+        - /mnt/data/users/Domaclena:/data/domaclena
+        - /mnt/data/users/Lecoq:/data/lecoq
       env_file:
         - "pydio.env"
       networks:

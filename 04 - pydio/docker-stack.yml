@@ -60,11 +60,9 @@ services:
         - 9000:9000
       volumes:
         - /mnt/data/users:/data/users
+        - /mnt/data/users/Clement:/data/clement
       env_file:
         - "pydio.env"
-      environment:
-        - MINIO_ACCESS_KEY=Password@123
-        - MINIO_SECRET_KEY=Password@123
       networks:
         - internal
       deploy:

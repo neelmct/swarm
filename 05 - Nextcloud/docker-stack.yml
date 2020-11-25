@@ -34,7 +34,10 @@ services:
     ports:
       - 8085:80
     volumes:
-      - "/mnt/swarm/volumes/nextcloud/app:/var/www/html"
+#      - "/mnt/swarm/volumes/nextcloud/app:/var/www/html"
+      - /mnt/swarm/volumes/nextcloud/app/custom_apps:/var/www/html/custom_apps
+      - /mnt/swarm/volumes/nextcloud/app/config:/var/www/html/config
+      - /mnt/swarm/volumes/nextcloud/app/data:/var/www/html/data
       - "/mnt/data:/mnt"
     environment:
       - POSTGRES_HOST=db

@@ -1,0 +1,68 @@
+version: '3.2'
+
+networks:
+  internal:
+    driver: overlay
+  proxy:
+    external: true
+
+services:
+  db:
+    image: postgres:alpine
+    volumes:
+      - "/mnt/swarm/volumes/nextcloud/db:/var/lib/postgresql/data"
+    env_file: "nextcloud.env"
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - "node.role == worker"
+
+  redis:
+    image: redis:alpine
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - "node.role == worker"
+
+  app:
+    image: nextcloud:fpm-alpine
+    volumes:
+      - "/mnt/swarm/volumes/nextcloud/app:/var/www/html"
+      - "/mnt/data:/mnt/data"
+    environment:
+      - POSTGRES_HOST=db
+      - REDIS_HOST=redis
+    env_file: "nextcloud.env"
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - "node.role == worker"
+
+  web:
+    image: nginx:alpine
+    ports:
+      - 8085:80
+    volumes:
+      - "/mnt/swarm/volumes/nextcloud/app:/var/www/html:ro"
+      - "nginx.conf:/etc/nginx/nginx.conf"
+    networks:
+      - internal
+      - proxy
+    deploy:
+      placement:
+        constraints:
+          - "node.role == worker"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nextcloud.entrypoints=websecure"
+        - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.clfp.fr`)"
+        - "traefik.http.routers.nextcloud.tls=true"
+        - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+        - "traefik.http.routers.nextcloud.tls.certresolver=ovhresolver"
+#        - "traefik.http.routers.nextcloud.middlewares=HSTS"

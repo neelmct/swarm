@@ -1,0 +1,16 @@
+tcp:
+  routers:
+    synology-drive:
+      entryPoints:
+        - websecure
+      service: synology
+      rule: Host(`drive.clfp.fr`)
+      tls:
+        certResolver: ovhresolver
+
+  services:
+    synology:
+      loadBalancer:
+        servers:
+          - address: nas.dmcn.fr
+#          - address: 10.44.0.35

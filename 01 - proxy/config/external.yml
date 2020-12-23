@@ -4,7 +4,7 @@ http:
       entryPoints:
         - websecure
       service: synology
-      rule: Host(`drive.clfp.fr`) && (Path(`/?launchApp=SYNO.SDS.Drive.Application`) || PathPrefix(`/scripts/`) || PathPrefix(`/synoSDSjslib/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webman/`))
+      rule: Host(`drive.clfp.fr`) && (Query(`launchApp=SYNO.SDS.Drive.Application`) || PathPrefix(`/scripts/`) || PathPrefix(`/synoSDSjslib/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webman/`))
       tls:
         certResolver: ovhresolver
 

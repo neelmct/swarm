@@ -1,4 +1,4 @@
-tcp:
+http:
   routers:
     synology-drive:
       entryPoints:
@@ -12,5 +12,4 @@ tcp:
     synology:
       loadBalancer:
         servers:
-          - address: nas.dmcn.fr
-#          - address: 10.44.0.35
+          - url: "https://nas.dmcn.fr:5000"

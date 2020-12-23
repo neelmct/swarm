@@ -12,4 +12,4 @@ http:
     synology:
       loadBalancer:
         servers:
-          - url: "https://nas.dmcn.fr:5000"
+          - url: "https://nas.dmcn.fr:5001"

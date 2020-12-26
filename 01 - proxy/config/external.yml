@@ -4,7 +4,7 @@ http:
       entryPoints:
         - websecure
       service: synology
-      rule: Host(`drive.clfp.fr`) && (Query(`launchApp=SYNO.SDS.Drive.Application`) || PathPrefix(`/scripts/`) || PathPrefix(`/synoSDSjslib/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webman/`))
+      rule: Host(`drive.clfp.fr`) # && (Query(`launchApp=SYNO.SDS.Drive.Application`) || PathPrefix(`/scripts/`) || PathPrefix(`/synoSDSjslib/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webapi/`) || PathPrefix(`/webman/`))
       tls:
         certResolver: ovhresolver
 
@@ -12,4 +12,4 @@ http:
     synology:
       loadBalancer:
         servers:
-          - url: "https://nas.dmcn.fr:5001"
+          - url: "https://nas.dmcn.fr:10003"

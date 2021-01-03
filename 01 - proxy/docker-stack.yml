@@ -17,6 +17,7 @@ services:
       - "--entryPoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.synology-sync.address=:61895"
       - "--certificatesresolvers.ovhresolver.acme.dnschallenge=true"
       - "--certificatesresolvers.ovhresolver.acme.dnschallenge.provider=ovh"
       - "--certificatesresolvers.ovhresolver.acme.dnschallenge.delaybeforecheck=0"
@@ -33,6 +34,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "61895:61895"
       - "8080:8080"
     env_file:
       - "ovh_api.env"

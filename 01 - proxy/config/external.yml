@@ -1,3 +1,7 @@
+entryPoints:
+  synology-sync:
+    address: ':7766'
+
 http:
   routers:
     synology-drive:
@@ -13,3 +17,19 @@ http:
       loadBalancer:
         servers:
           - url: "https://nas.dmcn.fr:10003"
+
+tcp:
+  routers:
+    synology-sync:
+      entryPoints:
+        - "synology-sync"
+      rule: "HostSNI(`drive.clfp.fr`)"
+      service: "synology-sync"
+      # will route TLS requests (and ignore non tls requests)
+      # tls: {}
+
+  services:
+    synology:
+      loadBalancer:
+        servers:
+          - address: "nas.dmcn.fr:6690"

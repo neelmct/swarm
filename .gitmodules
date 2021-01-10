@@ -1,0 +1,3 @@
+[submodule "06 - hugo/portfolio"]
+	path = 06 - hugo/portfolio
+	url = https://github.com/neelmct/portfolio.git

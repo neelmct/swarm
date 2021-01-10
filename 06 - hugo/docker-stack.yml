@@ -8,7 +8,7 @@ services:
   app:
     image: wilply/hugo
     volumes:
-      - "./portfolio:/app"
+      - "./portolio:/app"
     networks:
       - proxy
     deploy:

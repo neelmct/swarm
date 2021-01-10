@@ -1,9 +1,7 @@
-FROM alpine:latest
-
-EXPOSE 1313
+FROM caddy/caddy:alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache hugo
+RUN apk update && apk add --no-cache hugo
 
-CMD [ "hugo", "server", "--bind", "0.0.0.0", "-s", "/app" ]
+CMD hugo -d ../build -s /app && caddy file-server --root /build

@@ -6,10 +6,9 @@ networks:
 
 services:
   app:
-    build: .
-    image: hugo:prod
+    image: wilply/hugo
     volumes:
-      - "/portfolio:/app"
+      - "./portfolio:/app"
     networks:
       - proxy
     deploy:
